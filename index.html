@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ClipMemo</title>
+    
+    <!-- iOS Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ClipMemo">
+    <meta name="theme-color" content="#f2f2f7">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="app-container">
+        <header class="navbar">
+            <h1>ClipMemo</h1>
+            <button id="add-btn" class="icon-btn" aria-label="追加">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </header>
+
+        <main class="content">
+            <div id="empty-state" class="hidden">
+                <p>右上の ＋ ボタンから<br>新しいメモを追加してください</p>
+            </div>
+            <ul id="memo-list" class="list-group">
+                <!-- Snippets will be injected here -->
+            </ul>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="snippet-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="cancel-btn">キャンセル</button>
+                <h2 id="modal-title">新規メモ</h2>
+                <button id="save-btn" class="primary-text">保存</button>
+            </div>
+            <div class="modal-body">
+                <form id="snippet-form">
+                    <div class="input-group">
+                        <input type="text" id="snippet-label" placeholder="タイトル（例: 自宅住所）" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="snippet-text" placeholder="コピーする内容" rows="5" required></textarea>
+                    </div>
+                </form>
+                <div class="modal-footer hidden" id="delete-container">
+                    <button id="delete-btn" class="danger-text">このメモを削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">コピーしました</span>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker if supported
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed', err));
+            });
+        }
+    </script>
+</body>
+</html>
