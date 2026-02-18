@@ -48,16 +48,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Logic
 function loadSnippets() {
-    const data = localStorage.getItem('clipmemo_snippets');
-    if (data) {
-        snippets = JSON.parse(data);
-    } else {
-        // Initial sample data if empty
-        snippets = [
-            { id: Date.now(), label: '自宅住所', content: '〒100-0000 東京都千代田区...' },
-            { id: Date.now() + 1, label: 'メールアドレス', content: 'user@example.com' }
-        ];
-        saveData();
+    try {
+        const data = localStorage.getItem('clipmemo_snippets');
+        if (data) {
+            snippets = JSON.parse(data);
+        } else {
+            // Initial sample data if empty
+            snippets = [
+                { id: Date.now(), label: '自宅住所', content: '〒100-0000 東京都千代田区...' },
+                { id: Date.now() + 1, label: 'メールアドレス', content: 'user@example.com' }
+            ];
+            saveData();
+        }
+    } catch (e) {
+        console.error('Data load error:', e);
+        alert('データの読み込みに失敗しました。以前のデータをバックアップしました。');
+
+        // Backup corrupt data specifically to avoid loss
+        const rawData = localStorage.getItem('clipmemo_snippets');
+        if (rawData) {
+            localStorage.setItem('clipmemo_error_backup_' + Date.now(), rawData);
+        }
+
+        // Fallback to empty to allow app usage
+        snippets = [];
     }
 }
 
