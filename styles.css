@@ -115,7 +115,47 @@ body {
     color: var(--text-secondary);
     font-size: 10px;
     padding-bottom: 20px;
+    font-size: 10px;
+    padding-bottom: 20px;
     opacity: 0.4;
+}
+
+/* Pull to Refresh Indicator */
+.pull-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    gap: 8px;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.2s;
+}
+
+.pull-indicator.active {
+    height: 60px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-secondary);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* List Group */

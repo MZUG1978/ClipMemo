@@ -6,6 +6,10 @@ let editingId = null;
 const memoList = document.getElementById('memo-list');
 const emptyState = document.getElementById('empty-state');
 const addBtn = document.getElementById('add-btn');
+const reloadBtn = document.getElementById('reload-btn'); // New
+const contentArea = document.querySelector('.content'); // New container for pull
+const pullIndicator = document.getElementById('pull-indicator'); // New
+
 const modal = document.getElementById('snippet-modal');
 const modalTitle = document.getElementById('modal-title');
 const snippetForm = document.getElementById('snippet-form');
@@ -36,6 +40,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     addBtn.addEventListener('click', openAddModal);
+    reloadBtn.addEventListener('click', () => { window.location.reload(true); }); // Hard Reload
+
+    // Pull to Refresh Logic
+    let startY = 0;
+    let isPulling = false;
+
+    contentArea.addEventListener('touchstart', (e) => {
+        if (contentArea.scrollTop === 0) {
+            startY = e.touches[0].clientY;
+            isPulling = true;
+        } else {
+            isPulling = false;
+        }
+    }, { passive: true });
+
+    contentArea.addEventListener('touchmove', (e) => {
+        if (!isPulling) return;
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+
+        // If pulling down significantly and at top
+        if (diff > 80 && contentArea.scrollTop === 0) {
+            // Visual feedback could be added here (e.g., transforming content)
+        }
+    }, { passive: true });
+
+    contentArea.addEventListener('touchend', (e) => {
+        if (!isPulling) return;
+        if (contentArea.scrollTop === 0) {
+            const currentY = e.changedTouches[0].clientY;
+            if (currentY - startY > 100) { // Threshold for refresh
+                pullIndicator.classList.remove('hidden');
+                pullIndicator.classList.add('active');
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 500); // Small delay for UX
+            }
+        }
+        isPulling = false;
+    });
+
     cancelBtn.addEventListener('click', closeModal);
     saveBtn.addEventListener('click', saveSnippet);
     deleteBtn.addEventListener('click', deleteSnippet);
