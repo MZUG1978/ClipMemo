@@ -148,33 +148,40 @@ function closeModal() {
 }
 
 function saveSnippet() {
-    const label = labelInput.value.trim();
-    const content = textInput.value.trim();
+    try {
+        const label = labelInput.value.trim();
+        const content = textInput.value.trim();
 
-    if (!label || !content) {
-        alert('タイトルと内容を入力してください');
-        return;
-    }
-
-    if (editingId) {
-        // Update existing
-        const index = snippets.findIndex(s => s.id === editingId);
-        if (index !== -1) {
-            snippets[index] = { ...snippets[index], label, content };
+        if (!label || !content) {
+            alert('タイトルと内容を入力してください');
+            return;
         }
-    } else {
-        // Create new
-        const newSnippet = {
-            id: Date.now(),
-            label,
-            content
-        };
-        snippets.unshift(newSnippet); // Add to top
-    }
 
-    saveData();
-    renderList();
-    closeModal();
+        if (editingId) {
+            // Update existing
+            const index = snippets.findIndex(s => s.id === editingId);
+            if (index !== -1) {
+                snippets[index] = { ...snippets[index], label, content };
+            }
+        } else {
+            // Create new
+            const newSnippet = {
+                id: Date.now(),
+                label,
+                content
+            };
+            snippets.unshift(newSnippet); // Add to top
+        }
+
+        saveData();
+        renderList();
+    } catch (e) {
+        console.error('Save error:', e);
+        alert('保存中にエラーが発生しました: ' + e);
+    } finally {
+        // ALWAYS close the modal/reset state
+        closeModal();
+    }
 }
 
 function deleteSnippet() {
