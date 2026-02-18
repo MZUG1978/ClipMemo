@@ -55,8 +55,8 @@ body {
     background-color: var(--bg-color);
     /* Translucent effect can be added with backdrop-filter */
     padding: 10px 16px;
-    padding-top: max(10px, env(safe-area-inset-top));
-    /* Safe area for notch */
+    padding-top: max(20px, env(safe-area-inset-top));
+    /* Increased safe area for browser top bar overlap */
     display: flex;
     justify-content: space-between;
     align-items: center;
