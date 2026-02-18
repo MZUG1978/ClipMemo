@@ -145,6 +145,8 @@ function closeModal() {
     // Dismiss keyboard
     labelInput.blur();
     textInput.blur();
+    // Fix for Safari: Reset scroll position to avoid layout shifts becoming permanent
+    window.scrollTo(0, 0);
 }
 
 function saveSnippet() {
