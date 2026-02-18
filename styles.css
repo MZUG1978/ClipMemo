@@ -1,0 +1,362 @@
+/* CSS Variables for System Colors (Light/Dark Mode support planned later) */
+:root {
+    --bg-color: #f2f2f7;
+    --card-bg: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #8e8e93;
+    --accent-color: #007aff;
+    --danger-color: #ff3b30;
+    --separator-color: #c6c6c8;
+    --modal-bg: #ffffff;
+    --input-bg: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #000000;
+        --card-bg: #1c1c1e;
+        --text-primary: #ffffff;
+        --text-secondary: #8e8e93;
+        --separator-color: #38383a;
+        --modal-bg: #1c1c1e;
+        --input-bg: #2c2c2e;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overscroll-behavior-y: none;
+    /* Prevent rubber-banding on body */
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    height: 100dvh;
+    /* Dynamic Viewport Height for mobile browsers */
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--bg-color);
+    /* Translucent effect can be added with backdrop-filter */
+    padding: 10px 16px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    /* Safe area for notch */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid var(--separator-color);
+    z-index: 100;
+}
+
+.navbar h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    padding: 8px;
+    /* Touch target */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+#empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: 100px;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.app-version {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 20px;
+    opacity: 0.6;
+}
+
+/* List Group */
+.list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.list-item {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--separator-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item:active {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    .list-item:active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.item-text-container {
+    flex: 1;
+    overflow: hidden;
+    margin-right: 12px;
+}
+
+.drag-handle {
+    padding: 0 12px 0 4px;
+    /* Touch target size */
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.item-label {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.item-content {
+    font-size: 15px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: 1px solid var(--separator-color);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--accent-color);
+    min-width: 60px;
+    text-align: center;
+}
+
+.delete-btn {
+    color: var(--danger-color);
+    border-color: rgba(255, 59, 48, 0.3);
+}
+
+.edit-trigger {
+    display: none;
+    /* Removed old trigger */
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Dimmed background */
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    /* Sheet style on mobile */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    width: 100%;
+    height: 90%;
+    /* Sheet style */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 0.5px solid var(--separator-color);
+}
+
+.modal-header button {
+    background: none;
+    border: none;
+    font-size: 17px;
+    color: var(--accent-color);
+    cursor: pointer;
+    padding: 0;
+}
+
+.modal-header h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    border: none;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: inherit;
+    resize: none;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    outline: none;
+    /* iOS default focus style replacement could go here */
+}
+
+.danger-text {
+    color: var(--danger-color) !important;
+}
+
+.modal-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#delete-btn {
+    background: none;
+    border: none;
+    font-size: 17px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(50, 50, 50, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.toast.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    pointer-events: none;
+}
+
+.toast-icon {
+    font-weight: bold;
+}
+
+.toast-message {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
