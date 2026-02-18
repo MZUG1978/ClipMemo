@@ -222,11 +222,15 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--modal-bg);
-    /* Full opacity bg for full screen */
-    z-index: 1000;
+    height: 100dvh;
+    /* Use dynamic viewport height */
+    z-index: 9999;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    /* Explicit top alignment */
+    align-items: stretch;
+    background-color: var(--modal-bg);
     opacity: 1;
     transition: opacity 0.3s ease;
 }
@@ -241,10 +245,10 @@ body {
     background-color: var(--modal-bg);
     width: 100%;
     height: 100%;
-    /* Full screen */
+    height: 100dvh;
     display: flex;
     flex-direction: column;
-    /* Removed border-radius and shadow */
+    justify-content: flex-start;
     animation: slideUp 0.3s ease-out;
 }
 
